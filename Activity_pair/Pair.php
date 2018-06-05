@@ -58,10 +58,17 @@
         }
     }
 
+    function resetPairStatus() {
+        global $con;
+        $statement = mysqli_prepare($con, "UPDATE user SET pair_status = 0");
+        mysqli_stmt_execute($statement);
+        mysqli_stmt_close($statement);
+    }
+
     if (downloadUserID()) {
         runPair();
         uploadPairs();
-        // print_r($userIDs);
+        resetPairStatus();
         print_r($pairs);
     }
 

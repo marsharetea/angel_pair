@@ -8,8 +8,8 @@
 
     // $userID = $_POST["userid"];
     // $token = $_POST["token"];
-    $userID = 3;
-    $token = "1279314";
+    $userID = 2;
+    $token = "4048607";
 
     function updatePairStatus() {
         global $con, $userID, $token; //設定全域變數
@@ -21,7 +21,7 @@
 
     function confirmPair() {
         global $con, $userID, $token;
-        $statement = mysqli_prepare($con, "SELECT pair_status FROM user WHERE userid = (SELECT pair FROM pair WHERE userid = ?)");
+        $statement = mysqli_prepare($con, "SELECT pair_status FROM user WHERE userid = (SELECT pair FROM pair WHERE userid = ? LIMIT 1)");
         mysqli_stmt_bind_param($statement, "i", $userID);
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
