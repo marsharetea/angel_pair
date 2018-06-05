@@ -54,8 +54,8 @@
             $response["talent"] = urlencode($colTalent);
             $response["dream"] = urlencode($colDream);
             $response["image"] = $colImage;
-            $response["pair_lord_stauts"] = $colPairLordStatus;
-            $response["pair_angel_stauts"] = $colPairAngelStatus;
+            $response["pair_lord_status"] = $colPairLordStatus;
+            $response["pair_angel_status"] = $colPairAngelStatus;
         }
     }
 

@@ -13,12 +13,12 @@
     // $birth_status = 0;
     // $major = major_to_index($_POST["major"]);
 
-    $email = "Abby000@gmail.com";
-    $password = "09876";
-    $name = "Abby";
-    $sex = 0;
+    $email = "teresa1221@gmail.com";
+    $password = "TereTe";
+    $name = "Teresaaaaaa";
+    $sex = 1;
     $birth_status = 0;
-    $major = major_to_index("會計學系");
+    $major = major_to_index("電機工程學系");
 
     $club = "未填";
     $hobby = "未填";
@@ -28,14 +28,16 @@
     $talent = "未填";
     $dream = "未填";
     $image = "profile.png";
+    $pair_lord_status = -1;
+    $pair_angel_status = -1;
 
     $token = substr($email, 0, 2).rand(10000, 99999); //email前四碼+亂數四碼
 
     function registerUser() {
-        global $con, $token, $email, $password, $name, $sex, $birth_status, $major, $club, $hobby, $favorite_class, $favorite_city, $confusion, $talent, $dream, $image;
+        global $con, $token, $email, $password, $name, $sex, $birth_status, $major, $club, $hobby, $favorite_class, $favorite_city, $confusion, $talent, $dream, $image, $pair_lord_status, $pair_angel_status;
         // $passwordHash = password_hash($password, PASSWORD_DEFAULT); //使用hash值存入資料庫
-        $statement = mysqli_prepare($con, "INSERT INTO user (token, email, password, name, sex, birth_status, major, club, hobby, favorite_class, favorite_city, confusion, talent, dream, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($statement, "ssssiiissssssss", $token, $email, $password, $name, $sex, $birth_status, $major, $club, $hobby, $favorite_class, $favorite_city, $confusion, $talent, $dream, $image);
+        $statement = mysqli_prepare($con, "INSERT INTO user (token, email, password, name, sex, birth_status, major, club, hobby, favorite_class, favorite_city, confusion, talent, dream, image, pair_lord_status, pair_angel_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($statement, "ssssiiissssssssii", $token, $email, $password, $name, $sex, $birth_status, $major, $club, $hobby, $favorite_class, $favorite_city, $confusion, $talent, $dream, $image, $pair_lord_status, $pair_angel_status);
         mysqli_stmt_execute($statement);
         mysqli_stmt_close($statement);
     }
