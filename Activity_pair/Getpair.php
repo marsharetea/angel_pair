@@ -12,6 +12,18 @@
     $userID = 3;
     $token = "1279314";
 
+    function pairStatus() {
+        global $con, $userID, $response; //設定全域變數
+        $statement = mysqli_prepare($con, "SELECT pair_lord_status FROM user WHERE userid = ?"); //設定要執行的SQL指令，以?代表參數
+        mysqli_stmt_bind_param($statement, "i", $userID); //stmt與變數做連結
+        mysqli_stmt_execute($statement); //執行stmt
+        mysqli_stmt_store_result($statement); //將結果回傳並儲存
+        mysqli_stmt_bind_result($statement, $colPairLordStatus);
+        while (mysqli_stmt_fetch($statement)) {
+            $response["pair_lord_status"] = $colPairLordStatus;
+        }
+    }
+
     function getPairInfo() {
         global $con, $userID, $response; //設定全域變數
         $statement = mysqli_prepare($con, "SELECT * FROM pair, user WHERE pair.userid = ? AND user.userid = pair.pair"); //設定要執行的SQL指令，以?代表參數
@@ -20,7 +32,7 @@
         mysqli_stmt_store_result($statement); //將結果回傳並儲存
         mysqli_stmt_bind_result($statement, $colUserID_P, $colPair, $colStatus, $colUserID_U, $colToken, $colEmail, $colPassword, $colName,
         $colSex, $colBirthMonth, $colBirthDate, $colBirthStatus, $colEmotionalStatus, $colMajor, $colClub, $colHobby,
-        $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairStatus); //回傳結果與變數連結
+        $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus); //回傳結果與變數連結
         $count = mysqli_stmt_num_rows($statement); //回傳列數
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
@@ -28,7 +40,7 @@
                 // $response["token"] = $colToken;
                 // $response["email"] = $colEmail;
                 // $response["password"] = $colPassword;
-                $response["name"] = urlencode($colName);
+                // $response["name"] = urlencode($colName);
                 $response["sex"] = $colSex;
                 $response["birth_month"] = $colBirthMonth;
                 $response["birth_date"] = $colBirthDate;
@@ -43,7 +55,6 @@
                 $response["talent"] = urlencode($colTalent);
                 $response["dream"] = urlencode($colDream);
                 $response["image"] = urlencode(img_to_base64($colImage));
-                // $response["pair_status"] = $colPairStatus;
             }
             return true;
         } else {
@@ -54,6 +65,7 @@
     $response = array();
     $response["success"] = false;
 
+    pairStatus();
     if (getPairInfo()) {
         $response["success"] = true;
     } else {

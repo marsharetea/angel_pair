@@ -21,7 +21,7 @@
 
     function confirmPair() {
         global $con, $userID, $token;
-        $statement = mysqli_prepare($con, "SELECT pair_status FROM user WHERE userid = (SELECT pair FROM pair WHERE userid = ? LIMIT 1)");
+        $statement = mysqli_prepare($con, "SELECT pair_status FROM user WHERE userid = (SELECT pair FROM pair WHERE userid = ? AND status = 0 LIMIT 1)");
         mysqli_stmt_bind_param($statement, "i", $userID);
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);

@@ -32,7 +32,7 @@
         mysqli_stmt_store_result($statement);
         mysqli_stmt_bind_result($statement, $colUserID, $colToken, $colEmail, $colPassword, $colName,
         $colSex, $colBirthMonth, $colBirthDate, $colBirthStatus, $colEmotionalStatus, $colMajor, $colClub, $colHobby,
-        $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairStatus);
+        $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus);
 
         while (mysqli_stmt_fetch($statement)) {
             $response["userid"] = $colUserID;
@@ -54,7 +54,8 @@
             $response["talent"] = urlencode($colTalent);
             $response["dream"] = urlencode($colDream);
             $response["image"] = $colImage;
-            $response["pair_status"] = $colPairStatus;
+            $response["pair_lord_stauts"] = $colPairLordStatus;
+            $response["pair_angel_stauts"] = $colPairAngelStatus;
         }
     }
 

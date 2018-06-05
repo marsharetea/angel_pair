@@ -21,7 +21,7 @@
         mysqli_stmt_store_result($statement); //將結果回傳並儲存
         mysqli_stmt_bind_result($statement, $colUserID, $colToken, $colEmail, $colPassword, $colName,
         $colSex, $colBirthMonth, $colBirthDate, $colBirthStatus, $colEmotionalStatus, $colMajor, $colClub, $colHobby,
-        $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairStatus); //回傳結果與變數連結
+        $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus); //回傳結果與變數連結
         $count = mysqli_stmt_num_rows($statement); //回傳列數
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
@@ -44,7 +44,8 @@
                 $response["talent"] = urlencode($colTalent);
                 $response["dream"] = urlencode($colDream);
                 $response["image"] = urlencode(img_to_base64($colImage)); //解決base64解碼錯誤問題須加urlencode()
-                $response["pair_stauts"] = $colPairStatus;
+                $response["pair_lord_status"] = $colPairLordStatus;
+                $response["pair_angel_status"] = $colPairAngelStatus;
             }
             return true;
         } else {

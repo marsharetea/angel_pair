@@ -48,7 +48,7 @@
 
     function uploadPairs() {
         global $con, $pairs;
-        $statement = mysqli_prepare($con, "TRUNCATE TABLE pair");
+        $statement = mysqli_prepare($con, "UPDATE pair SET status = 1");
         mysqli_stmt_execute($statement);
 
         for ($i=0; $i < count($pairs); $i++) {
@@ -60,7 +60,7 @@
 
     function resetPairStatus() {
         global $con;
-        $statement = mysqli_prepare($con, "UPDATE user SET pair_status = 0");
+        $statement = mysqli_prepare($con, "UPDATE user SET pair_lord_status = 0, pair_angel_status = 0");
         mysqli_stmt_execute($statement);
         mysqli_stmt_close($statement);
     }
