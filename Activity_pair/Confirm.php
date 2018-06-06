@@ -8,9 +8,9 @@
     // $userID = $_POST["userid"];
     // $token = $_POST["token"];
     // $mode = $_POST["mode"];
-    $userID = 5;
-    $token = "he29602";
-    $mode = 2;
+    $userID = 3;
+    $token = "1279314";
+    $mode = 1;
 
     function updatePairStatus() {
         global $con, $mode, $userID, $token, $response; //設定全域變數

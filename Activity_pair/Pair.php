@@ -52,8 +52,8 @@
         mysqli_stmt_execute($statement);
 
         for ($i=0; $i < count($pairs); $i++) {
-            $statement = mysqli_prepare($con, "INSERT INTO pair (lord, angel) VALUES (?, ?), (?, ?)");
-            mysqli_stmt_bind_param($statement, "iiii", $pairs[$i][0], $pairs[$i][1], $pairs[$i][1], $pairs[$i][0]);
+            $statement = mysqli_prepare($con, "INSERT INTO pair (lord, angel) VALUES (?, ?)");
+            mysqli_stmt_bind_param($statement, "ii", $pairs[$i][0], $pairs[$i][1]);
             mysqli_stmt_execute($statement);
         }
     }
