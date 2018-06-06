@@ -48,7 +48,9 @@
 
     function uploadPairs() {
         global $con, $pairs;
-        $statement = mysqli_prepare($con, "UPDATE pair SET status = 1");
+        $statement = mysqli_prepare($con, "UPDATE pair SET status = 1 WHERE status = 0");
+        mysqli_stmt_execute($statement);
+        $statement = mysqli_prepare($con, "DELETE FROM friend WHERE status = -1");
         mysqli_stmt_execute($statement);
 
         for ($i=0; $i < count($pairs); $i++) {

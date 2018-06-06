@@ -26,17 +26,18 @@
 
     function getPairInfo() {
         global $con, $userID, $response; //設定全域變數
-        $statement = mysqli_prepare($con, "SELECT * FROM pair, user WHERE pair.lord = ? AND user.userid = pair.angel AND pair.status = 0"); //設定要執行的SQL指令，以?代表參數
+        // $statement = mysqli_prepare($con, "SELECT * FROM pair, user WHERE pair.lord = ? AND user.userid = pair.angel AND pair.status = 0");
+        $statement = mysqli_prepare($con, "SELECT * FROM user WHERE userid = (SELECT angel FROM pair WHERE lord = ? AND status = 0)");
         mysqli_stmt_bind_param($statement, "i", $userID); //stmt與變數做連結
         mysqli_stmt_execute($statement); //執行stmt
         mysqli_stmt_store_result($statement); //將結果回傳並儲存
-        mysqli_stmt_bind_result($statement, $colUserID_P, $colPair, $colStatus, $colUserID_U, $colToken, $colEmail, $colPassword, $colName,
+        mysqli_stmt_bind_result($statement, $colUserID, $colToken, $colEmail, $colPassword, $colName,
         $colSex, $colBirthMonth, $colBirthDate, $colBirthStatus, $colEmotionalStatus, $colMajor, $colClub, $colHobby,
         $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus); //回傳結果與變數連結
         $count = mysqli_stmt_num_rows($statement); //回傳列數
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
-                $response["userid"] = $colUserID_U;
+                $response["userid"] = $colUserID;
                 // $response["token"] = $colToken;
                 // $response["email"] = $colEmail;
                 // $response["password"] = $colPassword;
