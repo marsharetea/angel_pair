@@ -5,7 +5,7 @@
     // $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
     // mysqli_set_charset($con, "utf8"); //中文亂碼
 
-    // function addRelation($con, $userID, $yoursID, $mode, $context) {
+    // function tempRelation($con, $userID, $yoursID, $mode, $context) {
     //     if ($mode == 1) {
     //         $statement = mysqli_prepare($con, "SELECT relationid FROM friend WHERE lord = ? AND angel = ?");
     //     } else {
@@ -34,7 +34,7 @@
     //     }
     // }
 
-    function addRelation($con, $userID, $yoursID, $mode) {
+    function tempRelation($con, $userID, $yoursID, $mode) {
         $statement = mysqli_prepare($con, "INSERT INTO friend (lord, angel, status) VALUES (?, ?, -1)");
         if ($mode == 1) {
             mysqli_stmt_bind_param($statement, "ii", $userID, $yoursID);
@@ -44,7 +44,7 @@
         mysqli_stmt_execute($statement);
     }
 
-    function addFriend($con, $userID, $yoursID, $mode) {
+    function addRelation($con, $userID, $yoursID, $mode) {
         $statement = mysqli_prepare($con, "UPDATE friend SET status = 1 WHERE lord = ? AND angel = ?");
         if ($mode == 1) {
             mysqli_stmt_bind_param($statement, "ii", $userID, $yoursID);

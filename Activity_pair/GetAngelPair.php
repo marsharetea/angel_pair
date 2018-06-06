@@ -9,7 +9,7 @@
 
     // $userID = $_POST["userid"];
     // $token = $_POST["token"];
-    $userID = 2;
+    $userID = 9;
     $token = "";
 
     function pairStatus() {
@@ -35,6 +35,7 @@
         $colSex, $colBirthMonth, $colBirthDate, $colBirthStatus, $colEmotionalStatus, $colMajor, $colClub, $colHobby,
         $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus); //回傳結果與變數連結
         $count = mysqli_stmt_num_rows($statement); //回傳列數
+
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
                 $response["userid"] = $colUserID;

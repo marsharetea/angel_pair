@@ -8,27 +8,17 @@
     mysqli_set_charset($con, "utf8"); //中文亂碼
 
     // $userID = $_POST["userid"];
-    // $token = $_POST["token"];
-    $userID = 1;
-    $token = "";
+    // $yoursID = $_POST["yoursid"];
+    // $relationid = $_POST["relationid"];
+    $userID = 2;
+    $yoursID = 3;
+    $relationid = 8;
 
-    function pairStatus() {
-        global $con, $userID, $response; //設定全域變數
-        $statement = mysqli_prepare($con, "SELECT pair_lord_status FROM user WHERE userid = ?"); //設定要執行的SQL指令，以?代表參數
-        mysqli_stmt_bind_param($statement, "i", $userID); //stmt與變數做連結
-        mysqli_stmt_execute($statement); //執行stmt
-        mysqli_stmt_store_result($statement); //將結果回傳並儲存
-        mysqli_stmt_bind_result($statement, $colPairLordStatus);
-        while (mysqli_stmt_fetch($statement)) {
-            $response["pair_lord_status"] = $colPairLordStatus;
-        }
-    }
-
-    function getPairInfo() {
-        global $con, $userID, $response; //設定全域變數
+    function getFriendInfo() {
+        global $con, $yoursID, $response; //設定全域變數
         // $statement = mysqli_prepare($con, "SELECT * FROM pair, user WHERE pair.lord = ? AND user.userid = pair.angel AND pair.status = 0");
-        $statement = mysqli_prepare($con, "SELECT * FROM user WHERE userid = (SELECT angel FROM pair WHERE lord = ? AND status = 0)");
-        mysqli_stmt_bind_param($statement, "i", $userID); //stmt與變數做連結
+        $statement = mysqli_prepare($con, "SELECT * FROM user WHERE userid = ?");
+        mysqli_stmt_bind_param($statement, "i", $yoursID); //stmt與變數做連結
         mysqli_stmt_execute($statement); //執行stmt
         mysqli_stmt_store_result($statement); //將結果回傳並儲存
         mysqli_stmt_bind_result($statement, $colUserID, $colToken, $colEmail, $colPassword, $colName,
@@ -64,14 +54,24 @@
         }
     }
 
+    function getChatCount() {
+        global $con, $relationid, $response; //設定全域變數
+        $statement = mysqli_prepare($con, "SELECT * FROM chat WHERE relationid = ?");
+        mysqli_stmt_bind_param($statement, "i", $relationid);
+        mysqli_stmt_execute($statement);
+        mysqli_stmt_store_result($statement);
+        $count = mysqli_stmt_num_rows($statement);
+        $response["chat_count"] = $count;
+    }
+
     $response = array();
     $response["success"] = false;
 
-    pairStatus();
-    if (getPairInfo()) {
+    if (getFriendInfo()) {
+        getChatCount();
         $response["success"] = true;
     } else {
-        // echo "Get pair failed!";
+        // echo "Get friend failed!";
         $response["error"] = "getFailed";
     }
 

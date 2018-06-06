@@ -23,6 +23,7 @@
         $colSex, $colBirthMonth, $colBirthDate, $colBirthStatus, $colEmotionalStatus, $colMajor, $colClub, $colHobby,
         $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus); //回傳結果與變數連結
         $count = mysqli_stmt_num_rows($statement); //回傳列數
+
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
                 $response["userid"] = $colUserID;
@@ -54,7 +55,7 @@
     }
 
     function resetToken() {
-        global $con, $email, $password, $token;
+        global $con, $token, $email, $password;
         $statement = mysqli_prepare($con, "UPDATE user SET token = ? WHERE email = ? AND password = ?");
         mysqli_stmt_bind_param($statement, "sss", $token, $email, $password);
         mysqli_stmt_execute($statement);
@@ -70,12 +71,23 @@
         $response["user_count"] = $count;
     }
 
+    function getFriendCount() {
+        global $con, $response;
+        $statement = mysqli_prepare($con, "SELECT * FROM friend WHERE lord = ? OR angel = ?");
+        mysqli_stmt_bind_param($statement, "ii", $response["userid"], $response["userid"]);
+        mysqli_stmt_execute($statement);
+        mysqli_stmt_store_result($statement);
+        $count = mysqli_stmt_num_rows($statement);
+        $response["friend_count"] = $count;
+    }
+
     $response = array();
     $response["success"] = false;
 
     if (loginSuccess()) {
         resetToken();
         getUserCount();
+        getFriendCount();
         $response["success"] = true;
     } else {
         // echo "Login failed!";

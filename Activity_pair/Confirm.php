@@ -1,6 +1,7 @@
 <?php
     // require("password.php");
     include("../Activity_friend/AddRelation.php");
+    include("../Activity_chat/Greet.php");
 
     // $con = mysqli_connect("my_host", "my_user", "my_password", "my_database");
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
@@ -10,10 +11,10 @@
     // $token = $_POST["token"];
     // $mode = $_POST["mode"];
     // $conrext = $_POST["context"];
-    $userID = 3;
-    $token = "1279314";
-    $mode = 1;
-    $context = "hello world";
+    $userID = 9;
+    $token = "du78125";
+    $mode = 0;
+    $context = "hello world!!!!!!";
     $yoursID;
 
     function findYoursID() {
@@ -78,6 +79,7 @@
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
         mysqli_stmt_bind_result($statement, $colPairStatus);
+
         while (mysqli_stmt_fetch($statement)) {
             if ($colPairStatus > 0) {
                 return true;
@@ -95,12 +97,14 @@
     if (confirmPair()) {
         // pair success
         updatePairStatusTo2();
-        addFriend($con, $userID, $yoursID, $mode);
+        addRelation($con, $userID, $yoursID, $mode);
+        addGreet($con, $userID, $yoursID, $mode, $context);
         $response["success"] = true;
     } else {
         // not pair
         updatePairStatusTo1();
-        addRelation($con, $userID, $yoursID, $mode);
+        tempRelation($con, $userID, $yoursID, $mode);
+        addGreet($con, $userID, $yoursID, $mode, $context);
     }
 
     echo json_encode($response);
