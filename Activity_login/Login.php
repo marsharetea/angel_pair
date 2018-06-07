@@ -71,15 +71,15 @@
         $response["user_count"] = $count;
     }
 
-    function getFriendCount() {
-        global $con, $response;
-        $statement = mysqli_prepare($con, "SELECT * FROM friend WHERE lord = ? OR angel = ?");
-        mysqli_stmt_bind_param($statement, "ii", $response["userid"], $response["userid"]);
-        mysqli_stmt_execute($statement);
-        mysqli_stmt_store_result($statement);
-        $count = mysqli_stmt_num_rows($statement);
-        $response["friend_count"] = $count;
-    }
+    // function getFriendCount() {
+    //     global $con, $response;
+    //     $statement = mysqli_prepare($con, "SELECT * FROM friend WHERE lord = ? OR angel = ?");
+    //     mysqli_stmt_bind_param($statement, "ii", $response["userid"], $response["userid"]);
+    //     mysqli_stmt_execute($statement);
+    //     mysqli_stmt_store_result($statement);
+    //     $count = mysqli_stmt_num_rows($statement);
+    //     $response["friend_count"] = $count;
+    // }
 
     $response = array();
     $response["success"] = false;
@@ -87,7 +87,7 @@
     if (loginSuccess()) {
         resetToken();
         getUserCount();
-        getFriendCount();
+        // getFriendCount();
         $response["success"] = true;
     } else {
         // echo "Login failed!";

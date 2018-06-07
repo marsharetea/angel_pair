@@ -17,13 +17,15 @@
     $friends = array();
 
     function downloadFriend() {
-        global $con, $userID, $token, $friends;
+        global $con, $userID, $token, $friends, $response;
         $statement = mysqli_prepare($con, "SELECT relationid, lord, angel FROM friend WHERE lord = ? OR angel = ?");
         mysqli_stmt_bind_param($statement, "ii", $userID, $userID);
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
         mysqli_stmt_bind_result($statement, $colRelationID, $colLord, $colAngel);
         $count = mysqli_stmt_num_rows($statement);
+
+        $response["friend_count"] = $count;
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
                 if ($colLord != $userID)

@@ -44,7 +44,9 @@
         }
         mysqli_stmt_bind_param($statement, "is", $userID, $token); //stmt與變數做連結
         mysqli_stmt_execute($statement); //執行stmt
-        mysqli_stmt_close($statement);
+        // mysqli_stmt_close($statement);
+        $count = mysqli_stmt_num_rows($statement);
+        echo $count;
     }
 
     function updatePairStatusTo2() {
@@ -90,7 +92,7 @@
     }
 
     $response = array();
-    $response["success"] = false;
+    $response["success"] = true;
 
     findYoursID();
     // echo $yoursID;
@@ -99,7 +101,7 @@
         updatePairStatusTo2();
         addRelation($con, $userID, $yoursID, $mode);
         addGreet($con, $userID, $yoursID, $mode, $context);
-        $response["success"] = true;
+        // $response["success"] = true;
     } else {
         // not pair
         updatePairStatusTo1();

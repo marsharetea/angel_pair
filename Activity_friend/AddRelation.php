@@ -35,13 +35,25 @@
     // }
 
     function tempRelation($con, $userID, $yoursID, $mode) {
-        $statement = mysqli_prepare($con, "INSERT INTO friend (lord, angel, status) VALUES (?, ?, -1)");
+        $statement = mysqli_prepare($con, "SELECT * FROM friend WHERE lord = ? AND angel = ?");
         if ($mode == 1) {
             mysqli_stmt_bind_param($statement, "ii", $userID, $yoursID);
         } else {
             mysqli_stmt_bind_param($statement, "ii", $yoursID, $userID);
         }
         mysqli_stmt_execute($statement);
+        mysqli_stmt_store_result($statement);
+        $count = mysqli_stmt_num_rows($statement);
+
+        if ($count == 0) {
+            $statement = mysqli_prepare($con, "INSERT INTO friend (lord, angel, status) VALUES (?, ?, -1)");
+            if ($mode == 1) {
+                mysqli_stmt_bind_param($statement, "ii", $userID, $yoursID);
+            } else {
+                mysqli_stmt_bind_param($statement, "ii", $yoursID, $userID);
+            }
+            mysqli_stmt_execute($statement);
+        }
     }
 
     function addRelation($con, $userID, $yoursID, $mode) {
