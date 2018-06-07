@@ -11,9 +11,9 @@
     // $token = $_POST["token"];
     // $mode = $_POST["mode"];
     // $conrext = $_POST["context"];
-    $userID = 9;
-    $token = "du78125";
-    $mode = 0;
+    $userID = 6;
+    $token = "zz42462";
+    $mode = 1;
     $context = "hello world!!!!!!";
     $yoursID;
 

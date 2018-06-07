@@ -9,7 +9,7 @@
 
     // $userID = $_POST["userid"];
     // $token = $_POST["token"];
-    $userID = 1;
+    $userID = 6;
     $token = "";
 
     function pairStatus() {
