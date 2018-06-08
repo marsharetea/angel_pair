@@ -13,12 +13,12 @@
     // $birth_status = 0;
     // $major = major_to_index($_POST["major"]);
 
-    $email = "teresa1221@gmail.com";
-    $password = "TereTe";
-    $name = "Teresaaaaaa";
+    $email = "train12273@gmail.com";
+    $password = "1226222";
+    $name = "Train";
     $sex = 1;
     $birth_status = 0;
-    $major = major_to_index("電機工程學系");
+    $major = major_to_index("營養科學系");
 
     $club = "未填";
     $hobby = "未填";

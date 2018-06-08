@@ -11,10 +11,10 @@
     // $token = $_POST["token"];
     // $mode = $_POST["mode"];
     // $conrext = $_POST["context"];
-    $userID = 6;
-    $token = "zz42462";
-    $mode = 1;
-    $context = "hello world!!!!!!";
+    $userID = 1;
+    $token = "ev97604";
+    $mode = 0;
+    $context = "hey girl";
     $yoursID;
 
     function findYoursID() {
@@ -36,37 +36,47 @@
     function updatePairStatusTo1() {
         global $con, $mode, $userID, $token, $response; //設定全域變數
         if ($mode == 1) {
-            $response["pair_lord_status"] = 1;
+            // $response["pair_lord_status"] = 1;
             $statement = mysqli_prepare($con, "UPDATE user SET pair_lord_status = 1 WHERE userid = ? AND token = ?");
         } else {
-            $response["pair_angel_status"] = 1;
+            // $response["pair_angel_status"] = 1;
             $statement = mysqli_prepare($con, "UPDATE user SET pair_angel_status = 1 WHERE userid = ? AND token = ?");
         }
         mysqli_stmt_bind_param($statement, "is", $userID, $token); //stmt與變數做連結
         mysqli_stmt_execute($statement); //執行stmt
-        // mysqli_stmt_close($statement);
-        $count = mysqli_stmt_num_rows($statement);
-        echo $count;
+
+        $count = mysqli_affected_rows($con); //回傳mysql影響的筆數
+        if ($count > 0) {
+            if ($mode == 1) $response["pair_lord_status"] = 1; else $response["pair_angel_status"] = 1;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     function updatePairStatusTo2() {
         global $con, $mode, $userID, $token, $yoursID, $response;
         if ($mode == 1) {
-            $response["pair_lord_status"] = 2;
+            // $response["pair_lord_status"] = 2;
             $statement = mysqli_prepare($con, "UPDATE user SET pair_lord_status = 2 WHERE userid = ? AND token = ?");
-            mysqli_stmt_bind_param($statement, "is", $userID, $token);
-            mysqli_stmt_execute($statement);
-            $statement = mysqli_prepare($con, "UPDATE user SET pair_angel_status = 2 WHERE userid = ?");
-            mysqli_stmt_bind_param($statement, "i", $yoursID);
-            mysqli_stmt_execute($statement);
+            $statement2 = mysqli_prepare($con, "UPDATE user SET pair_angel_status = 2 WHERE userid = ?");
         } else {
-            $response["pair_angel_status"] = 2;
+            // $response["pair_angel_status"] = 2;
             $statement = mysqli_prepare($con, "UPDATE user SET pair_angel_status = 2 WHERE userid = ? AND token = ?");
-            mysqli_stmt_bind_param($statement, "is", $userID, $token);
-            mysqli_stmt_execute($statement);
-            $statement = mysqli_prepare($con, "UPDATE user SET pair_lord_status = 2 WHERE userid = ?");
-            mysqli_stmt_bind_param($statement, "i", $yoursID);
-            mysqli_stmt_execute($statement);
+            $statement2 = mysqli_prepare($con, "UPDATE user SET pair_lord_status = 2 WHERE userid = ?");
+        }
+        mysqli_stmt_bind_param($statement, "is", $userID, $token);
+        mysqli_stmt_execute($statement);
+        $count = mysqli_affected_rows($con);
+        mysqli_stmt_bind_param($statement2, "i", $yoursID);
+        mysqli_stmt_execute($statement2);
+        $count2 = mysqli_affected_rows($con);
+
+        if ($count > 0 && $count2 > 0) {
+            if ($mode == 1) $response["pair_lord_status"] = 2; else $response["pair_angel_status"] = 2;
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -92,21 +102,27 @@
     }
 
     $response = array();
-    $response["success"] = true;
+    $response["success"] = false;
 
     findYoursID();
-    // echo $yoursID;
     if (confirmPair()) {
         // pair success
-        updatePairStatusTo2();
-        addRelation($con, $userID, $yoursID, $mode);
-        addGreet($con, $userID, $yoursID, $mode, $context);
-        // $response["success"] = true;
+        if (updatePairStatusTo2()) {
+            addRelation($con, $userID, $yoursID, $mode);
+            addGreet($con, $userID, $yoursID, $mode, $context);
+            $response["success"] = true;
+        } else {
+            $response["error"] = "dataError";
+        }
     } else {
         // not pair
-        updatePairStatusTo1();
-        tempRelation($con, $userID, $yoursID, $mode);
-        addGreet($con, $userID, $yoursID, $mode, $context);
+        if (updatePairStatusTo1()) {
+            tempRelation($con, $userID, $yoursID, $mode);
+            addGreet($con, $userID, $yoursID, $mode, $context);
+            $response["success"] = true;
+        } else {
+            $response["error"] = "dataError";
+        }
     }
 
     echo json_encode($response);
