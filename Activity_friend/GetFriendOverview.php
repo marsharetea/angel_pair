@@ -7,17 +7,17 @@
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
     mysqli_set_charset($con, "utf8"); //中文亂碼
 
-    // $userID = $_POST["userid"];
+    $userID = $_POST["userid"];
     // $token = $_POST["token"];
-    // $index = $_POST["index"];
-    $userID = 2;
+    $index = $_POST["index"];
+    // $userID = 2;
     // $token = "4056842";
-    $index = 1;
+    // $index = 1;
 
     $friends = array();
 
     function downloadFriend() {
-        global $con, $userID, $friends, $response;
+        global $con, $userID, $index, $friends, $response;
         $statement = mysqli_prepare($con, "SELECT lord, angel, status FROM friend WHERE lord = ? OR angel = ?");
         mysqli_stmt_bind_param($statement, "ii", $userID, $userID);
         mysqli_stmt_execute($statement);
@@ -56,9 +56,10 @@
                 // $response["major"] = urlencode(index_to_major($colMajor));
                 // $response["image"] = urlencode(img_to_base64($colImage));
 
-                $response[] = array("userid" => $colUserID, "sex" => $colSex, "major" => urlencode(index_to_major($colMajor)), "identify" => $friends[$i][1], "status" => $friends[$i][2]);
+                $response[] = array("userid" => $colUserID, "sex" => $colSex, "major" => urlencode(index_to_major($colMajor)), "image" => urlencode(img_to_base64($colImage)), "identify" => $friends[$i][1], "status" => $friends[$i][2]);
             }
         }
+        $response["friend_count"] -= $index*8;
     }
 
     $response = array();
