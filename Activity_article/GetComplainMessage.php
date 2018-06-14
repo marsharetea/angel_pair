@@ -6,23 +6,27 @@
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
     mysqli_set_charset($con, "utf8"); //中文亂碼
 
+    // $articleID = $_POST["articleid"];
     // $index = $_POST["index"];
+    $articleID = 11;
     $index = 1;
     $interval = 8;
-    $articles = array();
 
-    function getArticle() {
-        global $con, $index, $interval, $articles, $response;
-        $statement = mysqli_prepare($con, "SELECT * FROM complain ORDER BY articleid DESC");
+    $messages = array();
+
+    function getMessage() {
+        global $con, $articleID, $index, $interval, $messages, $response;
+        $statement = mysqli_prepare($con, "SELECT userid, date, time, message FROM message_complain WHERE articleid = ? ORDER BY `date` ASC, `time` ASC");
+        mysqli_stmt_bind_param($statement, "i", $articleID);
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
-        mysqli_stmt_bind_result($statement, $colArticleID, $colUserID, $colDate, $colTime, $colHead, $colArticle);
+        mysqli_stmt_bind_result($statement, $colUserID, $colDate, $colTime, $colMessage);
 
         $count = mysqli_stmt_num_rows($statement);
-        $response["article_count"] = $count;
+        $response["message_count"] = $count;
 
         $start = ($index-1)*$interval;
-        if ($response["article_count"] < $index*$interval) $end = $response["article_count"]; else $end = $index*$interval;
+        if ($response["message_count"] < $index*$interval) $end = $response["message_count"]; else $end = $index*$interval;
 
         if ($count > 0) {
             $i = 0;
@@ -51,14 +55,13 @@
                         $colTime = "上午".(int)$colTime[0].":".$colTime[1];
                     }
 
-                    $articles[] = array("articleid" => $colArticleID, "userid" => $colUserID, "sex" => $colSex2, "major" => urlencode(index_to_major($colMajor2)), "date_time" => urlencode($colDate.$colTime), "head" => urlencode($colHead), "article" => urlencode($colArticle));
-
+                    $messages[] = array("sex" => $colSex2, "major" => urlencode(index_to_major($colMajor2)), "date_time" => urlencode($colDate.$colTime), "message" => urlencode($colMessage));
                 }
                 $i++;
             }
 
-            $response["articles"] = $articles;
-            $response["article_count"] -= $index*$interval;
+            $response["messages"] = $messages;
+            $response["message_count"] -= $index*$interval;
             return true;
         } else {
             return false;
@@ -68,11 +71,11 @@
     $response = array();
     $response["success"] = false;
 
-    if (getArticle()) {
+    if (getMessage()) {
         $response["success"] = true;
     } else {
-        // echo "Get article failed or No article!";
-        $response["error"] = "noArticle";
+        // echo "Get message failed or No message!";
+        $response["error"] = "noMessage";
     }
 
     echo urldecode(json_encode($response));

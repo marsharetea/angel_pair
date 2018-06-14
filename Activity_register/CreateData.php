@@ -24,7 +24,12 @@
     '希' , '昕' , '水' , '號' , '浩' , '財' , '齊' , '泣' , '愛' , '驁' , '短' , '大' ,
     '眾' , '莞' , '白' , '人' , '倫' , '士' , '程' , '傅' , '夫' , '爸' , '恁' , '夫' ,
     '玲' , '中' , '升' , '偉' , '剛' , '瑄' , '方' , '芳' , '樺' , '姿' , '婷' , '欽' ,
-    '繼' , '季' , '聰' , '志' , '慧' , '丞', '');
+    '繼' , '季' , '聰' , '志' , '慧' , '丞', '碩' , '文' , '群' , '瓊' , '茹' , '儒' ,
+    '誌' , '賢' , '裕' , '琳' , '鈺' , '伯' , '淳' , '醇' , '銀' , '盈' , '承' , '瑜' ,
+    '珍' , '倪' , '研' , '汶' , '竹' , '詠' , '之' , '芝' , '艾' , '格' , '塔' , '英' ,
+    '覺' , '扁' , '秀' , '蓮' , '九' , '海' , '彥' , '祿' , '昌' , '邦' , '百' , '千' ,
+    '萬' , '個' , '時' , '月' , '蘭' , '洋' , '瑞' , '叡' , '峻' , '璿' , '濬' , '樹' ,
+    '日' , '品' , '慈' , '卿' , '德' , '運' , '子' , '安' , '雪' , '兒' , '康' , '曼');
 
     $clubs = array('動漫社', '野營社', '網球社', '熱音社', '吉他社', '歷史研究社', '魔術社',
     '歌唱社', '熱舞社', '調酒社', '中醫社', '康輔社', '證券研究社', '攝影社', '親善社', '劍道社',
@@ -52,12 +57,12 @@
 
     $talents = array('唱歌', '拉小提琴', '網球', 'Java', '籃球', '桌球', '調酒', '跑步', '花錢', '攀岩',
     '吉他', '鋼琴', '繪畫', '英文', '日文', '做家事', '魔術', '打LOL', '羽球', 'Python', 'PHP', 'MySQL',
-    '殺價', '看手相', '喝酒', '舔手肘', '泰拳', '舔鼻頭', '開八字腿', '打扮');
+    '殺價', '看手相', '喝酒', '舔手肘', '泰拳', '舔鼻頭', '開八字腿', '打扮', '釣魚', '喝茶', '聊天', '等人');
 
     $dreams = array('成為太空人', '年薪千萬', '交女朋友', '養寵物', '帶家人出國', '環遊世界', '幫助弱勢',
     '進入台積電', '當模特兒', '成為明星', '有個哥哥', '有個妹妹', '成為歌星', '生兒子', '生女兒', '長命百歲',
     '中樂透', '與周杰倫握手', '學年第一', '出國留學', '有個富爸爸', '開間餐廳', '學會飛翔', '找出百慕達的秘密',
-    '裝潢自己的家', '喝醉', '吃胖', '學會開飛機', '成為奇樂', '田馥甄成為我女朋友');
+    '裝潢自己的家', '喝醉', '吃胖', '學會開飛機', '成為奇樂', '田馥甄成為我女朋友', '電梯永遠不用等', '被中國統治');
 
 
     function registerUser() {
@@ -66,7 +71,7 @@
         $email = $emails[rand(0, count($emails)-1)].$emails[rand(0, count($emails)-1)].rand(1000, 9999)."@gapp.fju.edu.tw";
         $password = rand(100000, 999999);
         $name = $firstname[rand(0, count($firstname)-1)].$lastname[rand(0, count($lastname)-1)].$lastname[rand(0, count($lastname)-1)];
-        $sex = rand(1, 2);
+        $sex = rand(0, 1);
         $birth_month = rand(1, 12);
         $birth_date = rand(1, 30);
         $birth_status = 1;
@@ -104,20 +109,6 @@
             return false;
         }
     }
-
-    // function getUserID() {
-    //     global $con, $token, $response;
-    //     $statement = mysqli_prepare($con, "SELECT userid FROM user WHERE token = ?");
-    //     mysqli_stmt_bind_param($statement, "s", $token);
-    //     mysqli_stmt_execute($statement);
-    //     mysqli_stmt_store_result($statement);
-    //     mysqli_stmt_bind_result($statement, $colUserID);
-    //
-    //     while (mysqli_stmt_fetch($statement)) {
-    //         $response["userid"] = $colUserID;
-    //         $response["token"] = $token;
-    //     }
-    // }
 
     $response = array();
     $response["success"] = false;

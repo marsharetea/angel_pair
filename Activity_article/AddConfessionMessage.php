@@ -5,22 +5,21 @@
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
     mysqli_set_charset($con, "utf8"); //中文亂碼
 
-    // $relationID = $_POST["relationid"];
-    // $context = $_POST["context"];
+    // $articleID = $_POST["articleid"];
     // $userID = $_POST["userid"];
-
-    $relationID = 38;
-    $context = "fuck me plz!";
-    $userID = 10;
+    // $message = $_POST["message"];
+    $articleID = 3;
+    $userID = 2;
+    $message = "賣鬧啦";
 
     date_default_timezone_set("Asia/Shanghai");
     $date = date("Y/m/d");
     $time = date("H:i:s");
 
-    function AddContext() {
-        global $con, $relationID, $context, $userID, $date, $time;
-        $statement = mysqli_prepare($con, "INSERT INTO chat (relationid, date, time, context, userid) VALUES (?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($statement, "isssi", $relationID, $date, $time, $context, $userID);
+    function AddMessage() {
+        global $con, $articleID, $userID, $date, $time, $message;
+        $statement = mysqli_prepare($con, "INSERT INTO message_confession (articleid, userid, date, time, message) VALUES (?, ?, ?, ?, ?)");
+        mysqli_stmt_bind_param($statement, "iisss", $articleID, $userID, $date, $time, $message);
         mysqli_stmt_execute($statement);
 
         $count = mysqli_affected_rows($con);
@@ -34,11 +33,11 @@
     $response = array();
     $response["success"] = false;
 
-    if (AddContext()) {
+    if (AddMessage()) {
         $response["success"] = true;
     } else {
-        // echo "Add context failed!";
-        $response["error"] = "addContextFailed";
+        // echo "Add complain message failed!";
+        $response["error"] = "addMessageFailed";
     }
 
     echo json_encode($response);

@@ -11,18 +11,18 @@
     // $token = $_POST["token"];
     // $mode = $_POST["mode"];
     // $conrext = $_POST["context"];
-    $userID = 1;
-    $token = "ev97604";
-    $mode = 0;
+    $userID = 4;
+    $token = "4078497";
+    $mode = 1; //主人配對 1，天使配對 0
     $context = "hey girl";
     $yoursID;
 
     function findYoursID() {
         global $con, $mode, $userID, $yoursID;
         if ($mode == 1) {
-            $statement = mysqli_prepare($con, "SELECT angel FROM pair WHERE lord = ? AND status = 0");
-        } else {
             $statement = mysqli_prepare($con, "SELECT lord FROM pair WHERE angel = ? AND status = 0");
+        } else {
+            $statement = mysqli_prepare($con, "SELECT angel FROM pair WHERE lord = ? AND status = 0");
         }
         mysqli_stmt_bind_param($statement, "i", $userID); //stmt與變數做連結
         mysqli_stmt_execute($statement); //執行stmt

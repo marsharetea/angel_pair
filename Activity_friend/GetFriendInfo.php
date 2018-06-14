@@ -49,16 +49,6 @@
         }
     }
 
-    // function getChatCount() {
-    //     global $con, $relationid, $response; //設定全域變數
-    //     $statement = mysqli_prepare($con, "SELECT * FROM chat WHERE relationid = ?");
-    //     mysqli_stmt_bind_param($statement, "i", $relationid);
-    //     mysqli_stmt_execute($statement);
-    //     mysqli_stmt_store_result($statement);
-    //     $count = mysqli_stmt_num_rows($statement);
-    //     $response["chat_count"] = $count;
-    // }
-
     $response = array();
     $response["success"] = false;
 

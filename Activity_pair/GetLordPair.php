@@ -27,7 +27,7 @@
     function getPairInfo() {
         global $con, $userID, $response; //設定全域變數
         // $statement = mysqli_prepare($con, "SELECT * FROM pair, user WHERE pair.lord = ? AND user.userid = pair.angel AND pair.status = 0");
-        $statement = mysqli_prepare($con, "SELECT * FROM user WHERE userid = (SELECT angel FROM pair WHERE lord = ? AND status = 0)");
+        $statement = mysqli_prepare($con, "SELECT * FROM user WHERE userid = (SELECT lord FROM pair WHERE angel = ? AND status = 0)");
         mysqli_stmt_bind_param($statement, "i", $userID); //stmt與變數做連結
         mysqli_stmt_execute($statement); //執行stmt
         mysqli_stmt_store_result($statement); //將結果回傳並儲存

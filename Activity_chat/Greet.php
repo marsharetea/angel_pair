@@ -4,13 +4,13 @@
 
         date_default_timezone_set("Asia/Shanghai");
         $date = date("Y/m/d");
-        $time = date("h:i:s");
+        $time = date("H:i:s");
 
         $statement = mysqli_prepare($con, "SELECT relationid FROM friend WHERE lord = ? AND angel = ?");
         if ($mode == 1) {
-            mysqli_stmt_bind_param($statement, "ii", $userID, $yoursID);
-        } else {
             mysqli_stmt_bind_param($statement, "ii", $yoursID, $userID);
+        } else {
+            mysqli_stmt_bind_param($statement, "ii", $userID, $yoursID);
         }
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);

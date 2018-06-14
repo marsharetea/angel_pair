@@ -68,7 +68,7 @@
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
         $count = mysqli_stmt_num_rows($statement);
-        $response["user_count"] = $count;
+        $response["user_count"] = number_format($count);
     }
 
     // function getFriendCount() {
