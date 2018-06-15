@@ -3,7 +3,7 @@
 
     ignore_user_abort();//關掉瀏覽器，PHP腳本也可以繼續執行.
     set_time_limit(0);// 通過set_time_limit(0)可以讓程式無限制的執行下去
-    $interval=2;// 每隔半小時運行
+    $interval=2;// 每隔...運行
 
     // $con = mysqli_connect("my_host", "my_user", "my_password", "my_database");
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
@@ -16,6 +16,7 @@
         global $con, $userIDs;
         // unset($GLOBALS['userIDs']);
         $userIDs = array();
+
         $statement = mysqli_prepare($con, "SELECT userid FROM user");
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
@@ -26,7 +27,6 @@
             while (mysqli_stmt_fetch($statement)) {
                 $userIDs[] = $colUserID;
             }
-            print_r($userIDs);
             return true;
         } else {
             return false;
@@ -37,7 +37,7 @@
         global $userIDs, $pairs;
         // unset($pairs);
         $pairs = array();
-        print_r($userIDs);
+
         while (count($userIDs) > 1) { //第一批配對
 
             $id1 = $userIDs[rand(0, count($userIDs)-1)];
@@ -78,8 +78,8 @@
 
     function checkDuplicate($id1, $id2) {
         global $con;
-        $statement = mysqli_prepare($con, "SELECT * FROM pair WHERE lord = ? AND angel = ?");
-        mysqli_stmt_bind_param($statement, "ii", $id1, $id2);
+        $statement = mysqli_prepare($con, "SELECT * FROM pair WHERE lord = ? AND angel = ? OR lord = ? AND angel = ?");
+        mysqli_stmt_bind_param($statement, "iiii", $id1, $id2, $id2, $id1);
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
         $count = mysqli_stmt_num_rows($statement);
@@ -111,22 +111,21 @@
         mysqli_stmt_close($statement);
     }
 
-    $i = 0;
-    do {
+    // $i = 0;
+    // do {
         if (downloadUserID()) {
             runPair();
-            foreach ($pairs as $key) {
-                echo "<br>";
-               foreach ($key as $key2) {
-                  echo $key2." ";
-               }
-            }
+            // foreach ($pairs as $key) {
+            //     echo "<br>";
+            //    foreach ($key as $key2) {
+            //       echo $key2." ";
+            //    }
+            // }
             uploadPairs();
             resetPairStatus();
-            // print_r($i);
         }
-        $i ++;
-        sleep($interval);// 等待5分鐘
-    }while($i < 2);
+    //     $i ++;
+    //     sleep($interval);// 等待...分鐘
+    // }while($i < 1);
 
 ?>

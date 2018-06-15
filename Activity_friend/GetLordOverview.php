@@ -30,7 +30,7 @@
         $response["friend_count"] = $count;
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
-                    $temp_friend[] = [$colRelationID, $colLord, 0];
+                $temp_friend[] = [$colRelationID, $colLord, 0];
             }
             return true;
         } else {

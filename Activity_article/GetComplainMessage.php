@@ -8,7 +8,7 @@
 
     // $articleID = $_POST["articleid"];
     // $index = $_POST["index"];
-    $articleID = 11;
+    $articleID = 8;
     $index = 1;
     $interval = 8;
 
@@ -55,7 +55,9 @@
                         $colTime = "上午".(int)$colTime[0].":".$colTime[1];
                     }
 
-                    $messages[] = array("sex" => $colSex2, "major" => urlencode(index_to_major($colMajor2)), "date_time" => urlencode($colDate.$colTime), "message" => urlencode($colMessage));
+                    $floor = "B".($i+1); //樓層mark
+
+                    $messages[] = array("sex" => $colSex2, "major" => urlencode(index_to_major($colMajor2)), "date_time" => urlencode($colDate.$colTime), "message" => urlencode($colMessage), "floor" => $floor);
                 }
                 $i++;
             }

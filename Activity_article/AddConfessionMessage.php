@@ -8,7 +8,7 @@
     // $articleID = $_POST["articleid"];
     // $userID = $_POST["userid"];
     // $message = $_POST["message"];
-    $articleID = 3;
+    $articleID = 1;
     $userID = 2;
     $message = "賣鬧啦";
 

@@ -35,7 +35,12 @@
                     mysqli_stmt_store_result($statement2);
                     mysqli_stmt_bind_result($statement2, $colSex, $colMajor);
                     while (mysqli_stmt_fetch($statement2)) {
-                        $colSex2 = $colSex;
+                        if ($colUserID == 1) {
+                            $colSex2 = 2;
+                        } else {
+                            $colSex2 = $colSex;
+                        }
+
                         $colMajor2 = $colMajor;
                     }
 
