@@ -41,7 +41,7 @@
                 $response["confusion"] = urlencode($colConfusion);
                 $response["talent"] = urlencode($colTalent);
                 $response["dream"] = urlencode($colDream);
-                $response["image"] = urlencode(img_to_base64($colImage));
+                // $response["image"] = urlencode(img_to_base64($colImage));
             }
             return true;
         } else {

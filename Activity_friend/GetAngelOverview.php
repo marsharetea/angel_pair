@@ -11,9 +11,10 @@
     // $token = $_POST["token"];
     // $index = $_POST["index"];
     $userID = 2;
-    $token = "4067088";
+    $token = "4010176";
     $index = 1;
     $interval = 8;
+    $time_space = 14409;
 
     $temp_friend = array();
     $friends = array();
@@ -57,7 +58,12 @@
                 // $response["image"] = urlencode(img_to_base64($colImage));
                 $colContext = getLatestMessage($temp_friend[$i][0]);
 
-                $friends[] = array("userid" => $colUserID, "name" => urlencode($colName), "sex" => $colSex, "major" => urlencode(index_to_major($colMajor)), "image" => urlencode(img_to_base64($colImage)), "latest" => urlencode($colContext), "relationid" => $temp_friend[$i][0], "status" => $temp_friend[$i][2]);
+                if ($temp_friend[$i][2] == 1 && !checkBlurStatus($temp_friend[$i][0])) {
+                    $colImage2 = explode(".", $colImage);
+                    $colImage = $colImage2[0]."_1.jpg";
+                }
+
+                $friends[] = array("userid" => $colUserID, "name" => urlencode($colName), "sex" => $colSex, "major" => urlencode(index_to_major($colMajor)), "image" => "http://140.136.133.78/angel_pair/imgg/".$colImage, "latest" => urlencode($colContext), "relationid" => $temp_friend[$i][0], "status" => $temp_friend[$i][2]);
             }
         }
         $response["friends"] = $friends;
@@ -75,6 +81,43 @@
             return $colContext;
         }
         return "Nothing";
+    }
+
+    function checkBlurStatus($relationID) {
+        global $con, $time_space;
+        $statement = mysqli_prepare($con, "SELECT `date`, `time` FROM chat WHERE relationid = ?");
+        mysqli_stmt_bind_param($statement, "i", $relationID);
+        mysqli_stmt_execute($statement);
+        mysqli_stmt_store_result($statement);
+        mysqli_stmt_bind_result($statement, $colDate, $colTime);
+        while (mysqli_stmt_fetch($statement)) {
+            $date = $colDate;
+            $time = $colTime;
+        }
+        $date_arr = explode("/", $date);
+        $time_arr = explode(":", $time);
+        $pair_time = calculateTime($date_arr, $time_arr);
+
+        date_default_timezone_set("Asia/Shanghai");
+        $date = date("Y/m/d");
+        $time = date("H:i:s");
+        $date_arr = explode("/", $date);
+        $time_arr = explode(":", $time);
+        $current_time = calculateTime($date_arr, $time_arr);
+
+        if ($current_time - $pair_time > $time_space) {
+            $statement = mysqli_prepare($con, "UPDATE friend SET status = 0 WHERE relationid = ?");
+            mysqli_stmt_bind_param($statement, "i", $relationID);
+            mysqli_stmt_execute($statement);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function calculateTime($date_arr, $time_arr) {
+        $totle_time = ((((($date_arr[0]*12+$date_arr[1]))*30)+$date_arr[2])*24+$time_arr[0])*60+$time_arr[1];
+        return $totle_time;
     }
 
     $response = array();

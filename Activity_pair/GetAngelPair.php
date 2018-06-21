@@ -56,7 +56,9 @@
                 $response["confusion"] = urlencode($colConfusion);
                 $response["talent"] = urlencode($colTalent);
                 $response["dream"] = urlencode($colDream);
-                $response["image"] = urlencode(img_to_base64($colImage));
+                // $response["image"] = urlencode(img_to_base64($colImage));
+                $colImage = explode(".", $colImage);
+                $response["image"] = "http://140.136.133.78/angel_pair/imgg/".$colImage[0]."_1.jpg";
             }
             return true;
         } else {

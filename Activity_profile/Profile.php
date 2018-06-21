@@ -8,7 +8,7 @@
     // $userID = $_POST["userid"];
     // $token = $_POST["token"];
     $userID = 3;
-    $token = "1279314";
+    $token = "1296537";
 
     function searchUser() {
         global $con, $userID, $token;
@@ -35,27 +35,27 @@
         $colFavorClass, $colFavorCity, $colConfusion, $colTalent, $colDream, $colImage, $colPairLordStatus, $colPairAngelStatus);
 
         while (mysqli_stmt_fetch($statement)) {
-            $response["userid"] = $colUserID;
-            $response["token"] = $colToken;
-            $response["email"] = $colEmail;
-            $response["password"] = $colPassword;
-            $response["name"] = urlencode($colName);
-            $response["sex"] = $colSex;
-            $response["birth_month"] = $colBirthMonth;
-            $response["birth_date"] = $colBirthDate;
-            $response["birth_status"] = $colBirthStatus;
-            $response["emotional_status"] = $colEmotionalStatus;
-            $response["major"] = $colMajor;
-            $response["club"] = urlencode($colClub);
-            $response["hobby"] = urlencode($colHobby);
-            $response["favorite_class"] = urlencode($colFavorClass);
-            $response["favorite_city"] = urlencode($colFavorCity);
-            $response["confusion"] = urlencode($colConfusion);
-            $response["talent"] = urlencode($colTalent);
-            $response["dream"] = urlencode($colDream);
-            $response["image"] = $colImage;
-            $response["pair_lord_status"] = $colPairLordStatus;
-            $response["pair_angel_status"] = $colPairAngelStatus;
+            // $response["userid"] = $colUserID;
+            // $response["token"] = $colToken;
+            // $response["email"] = $colEmail;
+            // $response["password"] = $colPassword;
+            // $response["name"] = urlencode($colName);
+            // $response["sex"] = $colSex;
+            // $response["birth_month"] = $colBirthMonth;
+            // $response["birth_date"] = $colBirthDate;
+            // $response["birth_status"] = $colBirthStatus;
+            // $response["emotional_status"] = $colEmotionalStatus;
+            // $response["major"] = $colMajor;
+            // $response["club"] = urlencode($colClub);
+            // $response["hobby"] = urlencode($colHobby);
+            // $response["favorite_class"] = urlencode($colFavorClass);
+            // $response["favorite_city"] = urlencode($colFavorCity);
+            // $response["confusion"] = urlencode($colConfusion);
+            // $response["talent"] = urlencode($colTalent);
+            // $response["dream"] = urlencode($colDream);
+            $response["image"] = "http://140.136.133.78/angel_pair/imgg/".$colImage;
+            // $response["pair_lord_status"] = $colPairLordStatus;
+            // $response["pair_angel_status"] = $colPairAngelStatus;
         }
     }
 

@@ -44,7 +44,8 @@
                 $response["confusion"] = urlencode($colConfusion);
                 $response["talent"] = urlencode($colTalent);
                 $response["dream"] = urlencode($colDream);
-                $response["image"] = urlencode(img_to_base64($colImage)); //解決base64解碼錯誤問題須加urlencode()
+                // $response["image"] = urlencode(img_to_base64($colImage)); //解決base64解碼錯誤問題須加urlencode()
+                $response["image"] = "http://140.136.133.78/angel_pair/imgg/".$colImage;
                 $response["pair_lord_status"] = $colPairLordStatus;
                 $response["pair_angel_status"] = $colPairAngelStatus;
             }
@@ -71,6 +72,15 @@
         $response["user_count"] = number_format($count);
     }
 
+    function getSuccessPairCount() {
+        global $con, $response;
+        $statement = mysqli_prepare($con, "SELECT * FROM friend");
+        mysqli_stmt_execute($statement);
+        mysqli_stmt_store_result($statement);
+        $count = mysqli_stmt_num_rows($statement);
+        $response["pair_count"] = number_format($count);
+    }
+
     // function getFriendCount() {
     //     global $con, $response;
     //     $statement = mysqli_prepare($con, "SELECT * FROM friend WHERE lord = ? OR angel = ?");
@@ -87,6 +97,7 @@
     if (loginSuccess()) {
         resetToken();
         getUserCount();
+        getSuccessPairCount();
         // getFriendCount();
         $response["success"] = true;
     } else {

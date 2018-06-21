@@ -1,9 +1,9 @@
 <?php
     // require("password.php");
 
-    ignore_user_abort();//關掉瀏覽器，PHP腳本也可以繼續執行.
-    set_time_limit(0);// 通過set_time_limit(0)可以讓程式無限制的執行下去
-    $interval=2;// 每隔...運行
+    // ignore_user_abort();//關掉瀏覽器，PHP腳本也可以繼續執行.
+    // set_time_limit(0);// 通過set_time_limit(0)可以讓程式無限制的執行下去
+    // $interval=2;// 每隔...運行
 
     // $con = mysqli_connect("my_host", "my_user", "my_password", "my_database");
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫

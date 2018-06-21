@@ -8,7 +8,7 @@ mysqli_set_charset($con, "utf8"); //中文亂碼
      $userID = $_POST["userid"];
      $token = $_POST["token"];
      $ImageData = $_POST['image_data'];
-     $ImageName = $userID."_$token.jpg";
+     $ImageName = $userID."_$token".rand(111,999).".jpg";
      // $ImagePath = "imgg/$ImageName.jpg";
 
      $statement = mysqli_prepare($con, "UPDATE user SET image = ? WHERE userid = ? AND token = ?");
@@ -17,6 +17,9 @@ mysqli_set_charset($con, "utf8"); //中文亂碼
      mysqli_stmt_close($statement);
 
      file_put_contents("../imgg/$ImageName", base64_decode($ImageData));
+
+     sleep(5);
+     include("mosaic.php");
 
  } else {
     // echo "Please Try Again";

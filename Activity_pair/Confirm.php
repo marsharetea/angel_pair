@@ -11,10 +11,10 @@
     // $token = $_POST["token"];
     // $mode = $_POST["mode"];
     // $conrext = $_POST["context"];
-    $userID = 4;
-    $token = "4078497";
+    $userID = 1;
+    $token = "ev97604";
     $mode = 1; //主人配對 1，天使配對 0
-    $context = "hey girl";
+    $context = "hey my angel";
     $yoursID;
 
     function findYoursID() {
@@ -101,6 +101,15 @@
         }
     }
 
+    function sendFireBase() {
+        global $con, $userID, $yoursID, $mode, $response;
+        $filebase = fireBase($con, $userID, $yoursID, $mode);
+        $response["lordid"] = $filebase["lordid"];
+        $response["angelid"] = $filebase["angelid"];
+        $response["lordcontext"] = $filebase["lordcontext"];
+        $response["angelcontext"] = $filebase["angelcontext"];
+    }
+
     $response = array();
     $response["success"] = false;
 
@@ -110,6 +119,7 @@
         if (updatePairStatusTo2()) {
             addRelation($con, $userID, $yoursID, $mode);
             addGreet($con, $userID, $yoursID, $mode, $context);
+            sendFireBase();
             $response["success"] = true;
         } else {
             $response["error"] = "dataError";

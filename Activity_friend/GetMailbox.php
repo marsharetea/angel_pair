@@ -1,7 +1,6 @@
 <?php
     // require("password.php");
     include("../major_trans.php");
-    include("../Activity_image/DownloadImg.php");
 
     // $con = mysqli_connect("my_host", "my_user", "my_password", "my_database");
     $con = mysqli_connect("127.0.0.1", "root", "1234", "angel_pair"); //連結資料庫
@@ -11,7 +10,7 @@
     // $token = $_POST["token"];
     // $index = $_POST["index"];
     $userID = 2;
-    $token = "4010176";
+    // $token = "4085137";
     $index = 1;
     $interval = 8;
 
@@ -19,18 +18,22 @@
     $friends = array();
 
     function downloadFriend() {
-        global $con, $userID, $token, $temp_friend, $response;
-        $statement = mysqli_prepare($con, "SELECT relationid, lord, status FROM friend, user WHERE angel = ? AND user.token = ?");
-        mysqli_stmt_bind_param($statement, "is", $userID, $token);
+        global $con, $userID, $temp_friend, $response;
+        $statement = mysqli_prepare($con, "SELECT lord, angel, status FROM friend WHERE angel = ? OR lord = ?");
+        mysqli_stmt_bind_param($statement, "ii", $userID, $userID);
         mysqli_stmt_execute($statement);
         mysqli_stmt_store_result($statement);
-        mysqli_stmt_bind_result($statement, $colRelationID, $colLord, $colStatus);
+        mysqli_stmt_bind_result($statement, $colLord, $colAngel, $colStatus);
         $count = mysqli_stmt_num_rows($statement);
 
         $response["friend_count"] = $count;
         if ($count > 0) {
             while (mysqli_stmt_fetch($statement)) {
-                $temp_friend[] = [$colRelationID, $colLord, 0];
+                if ($colLord == $userID) {
+                    $temp_friend[] = [$colAngel, $colStatus, 0];
+                } else {
+                    $temp_friend[] = [$colLord, $colStatus, 1];
+                }
             }
             return true;
         } else {
@@ -46,35 +49,17 @@
         // for ($i=0; $i < $response["friend_count"]; $i++) {
         for ($i=$start; $i < $end; $i++) {
             $statement = mysqli_prepare($con, "SELECT userid, name, sex, major, image FROM user WHERE userid = ?");
-            mysqli_stmt_bind_param($statement, "i", $temp_friend[$i][1]);
+            mysqli_stmt_bind_param($statement, "i", $temp_friend[$i][0]);
             mysqli_stmt_execute($statement);
             mysqli_stmt_store_result($statement);
             mysqli_stmt_bind_result($statement, $colUserID, $colName, $colSex, $colMajor, $colImage);
             while (mysqli_stmt_fetch($statement)) {
-                // $response["userid"] = $colUserID;
-                // $response["sex"] = $colSex;
-                // $response["major"] = urlencode(index_to_major($colMajor));
-                // $response["image"] = urlencode(img_to_base64($colImage));
-                $colContext = getLatestMessage($temp_friend[$i][0]);
 
-                $friends[] = array("userid" => $colUserID, "name" => urlencode($colName), "sex" => $colSex, "major" => urlencode(index_to_major($colMajor)), "image" => "http://140.136.133.78/angel_pair/imgg/".$colImage, "latest" => urlencode($colContext), "relationid" => $temp_friend[$i][0], "status" => $temp_friend[$i][2]);
+                $friends[] = array("userid" => $colUserID, "name" => urlencode($colName), "sex" => $colSex, "major" => urlencode(index_to_major($colMajor)), "image" => "http://140.136.133.78/angel_pair/imgg/".$colImage, "status" => $temp_friend[$i][1], "mode" => $temp_friend[$i][2]);
             }
         }
         $response["friends"] = $friends;
         $response["friend_count"] -= $index*$interval;
-    }
-
-    function getLatestMessage($relationID) {
-        global $con;
-        $statement = mysqli_prepare($con, "SELECT context FROM chat WHERE relationid = ? ORDER BY `date` DESC, `time` DESC LIMIT 1");
-        mysqli_stmt_bind_param($statement, "i", $relationID);
-        mysqli_stmt_execute($statement);
-        mysqli_stmt_store_result($statement);
-        mysqli_stmt_bind_result($statement, $colContext);
-        while (mysqli_stmt_fetch($statement)) {
-            return $colContext;
-        }
-        return "Nothing";
     }
 
     $response = array();
